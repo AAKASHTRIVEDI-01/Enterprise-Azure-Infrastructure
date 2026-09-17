@@ -5,7 +5,7 @@ resource "azurerm_route_table" "spoke_udr" {
   name                          = "rt-spoke-egress-firewall"
   location                      = var.location
   resource_group_name           = var.resource_group_name
-  disable_bgp_route_propagation = false
+  bgp_route_propagation_enabled = false
   tags                          = var.tags
 
   route {
