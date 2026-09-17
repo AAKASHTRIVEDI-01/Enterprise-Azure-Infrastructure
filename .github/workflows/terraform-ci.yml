@@ -1,0 +1,34 @@
+name: Terraform Quality & Security Validation
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Lint, Format & Validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.0
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Init (Dry Validation)
+        run: terraform init -backend=false
+
+      - name: Terraform Validate
+        run: terraform validate
